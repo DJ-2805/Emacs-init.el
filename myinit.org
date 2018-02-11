@@ -1,0 +1,192 @@
+* Tool Bar Removal
+** removes tool bar
+** also removes tutorial emacs page
+** sets yes or no to y or n
+#+BEGIN_SRC emacs-lisp
+
+(setq inhibit-startup-message t)
+(tool-bar-mode -1)
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+
+* Try Package
+** haves emacs only try a package rather than install
+#BEGIN_SRC emacs-lisp
+
+(use-package try
+	     :ensure t)
+#+END_SRC
+
+
+* Which Key
+** helps with C-x shortcuts, if user forgets
+#+BEGIN_SRC emacs-lisp
+
+(use-package which-key
+	     :ensure t
+	     :config (which-key-mode))
+#+END_SRC
+
+
+* Org Mode Items
+** creates org mode bullets
+** sets up org-reveal presentation mode
+** allows html highlighting in org mode
+#BEGIN_SRC emacs-lisp
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+
+(use-package htmlize
+  :ensure t)
+#END_SRC
+
+
+* Tab Bar
+** Creates tab bar for Emacs
+#+BEGIN_SRC emacs-lisp
+
+(defalias 'list-buffers 'ibuffer)
+(use-package tabbar
+  :ensure t
+  :config
+  (tabbar-mode 1))
+#+END_SRC
+
+
+* Counsel
+** list possible outcomes for typing
+#+BEGIN_SRC emacs-lisp
+
+(use-package counsel
+  :ensure t
+  )
+#+END_SRC
+
+
+* Swiper
+** search function
+#+BEGIN_SRC emacs-lisp
+
+(use-package swiper
+  :ensure try
+  :bind (("C-s" . swiper)
+	 ("C-r" . swiper)
+	 ("C-c C-r" . ive-resume)
+	 ("M-x" . counsel-M-x)
+	 ("C-x C-f" . counsel-find-file))
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+    ))
+
+#+END_SRC
+
+
+* Avy
+** helps move through buffer
+#+BEGIN_SRC emacs-lisp
+
+(use-package avy
+  :ensure t
+  :bind ("M-s" . avy-goto-char))
+#+END_SRC
+
+
+* Auto Complete
+** completes input if desired
+#+BEGIN_SRC emacs-lisp
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+    (ac-config-default)
+    (global-auto-complete-mode t)
+    ))
+#+END_SRC
+
+
+* Theme
+** loads themes for emacs
+** if statement is to switch themes between gui and terminal
+#+BEGIN_SRC emacs-lisp
+
+(load-theme 'misterioso)
+(load-theme 'tango-dark)
+(if (display-graphic-p)
+    (enable-theme 'misterioso)
+  (enable-theme 'tango-dark))
+#+END_SRC
+
+
+* Flycheck
+** checks coding syntax
+#+BEGIN_SRC emacs-lisp
+
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+#+END_SRC
+
+
+* Highlight
+** highlights bar of cursor
+#+BEGIN_SRC emacs-lisp
+
+(global-hl-line-mode t)
+#+END_SRC
+
+
+* Hungry Delete
+** deletes all white space between text when deleting
+#+BEGIN_SRC emacs-lisp
+
+(use-package hungry-delete
+  :ensure t
+  :config
+  (global-hungry-delete-mode))
+
+#+END_SRC
+
+
+* Expand Region
+** highlights within a parenthesis
+** expands out left and right
+#+BEGIN_SRC emacs-lisp
+
+(use-package expand-region
+  :ensure t
+  :config
+  (global-set-key (kbd "C-=") 'er/expand-region))
+#+END_SRC
+
+
+* iEdit
+** allows editing of multiple words at one time
+#+BEGIN_SRC emacs-lisp
+
+(use-package iedit
+  :ensure t)
+#+END_SRC
+
+
+* List Buffers
+** lists buffers in a seperate page for organization
+#+BEGIN_SRC emacs-lisp
+;;creates a tab bar in emacs
+(defalias 'list-buffers 'ibuffer)
+(use-package tabbar
+  :ensure t
+  :config
+  (tabbar-mode 1))
+#+END_SRC
