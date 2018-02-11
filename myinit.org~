@@ -120,15 +120,11 @@
 ** if statement is to switch themes between gui and terminal
 #+BEGIN_SRC emacs-lisp
 
-  (use-package zenburn-theme
-    :ensure t
-    :config (load-theme 'zenburn t))
-
-  ;;(load-theme 'misterioso)
-  ;;(load-theme 'tango-dark)
-  ;;(if (display-graphic-p)
-  ;;    (enable-theme 'misterioso)
-  ;;  (enable-theme 'tango-dark))
+(load-theme 'misterioso)
+(load-theme 'tango-dark)
+(if (display-graphic-p)
+    (enable-theme 'misterioso)
+  (enable-theme 'tango-dark))
 #+END_SRC
 
 
