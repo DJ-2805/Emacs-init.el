@@ -10,10 +10,10 @@
 #+END_SRC
 
 
-* Try Package
+* Try 
 ** haves emacs only try a package rather than install
 
-#+BEGIN_SRC 
+#+BEGIN_SRC emacs-lisp
 
 (use-package try
 	     :ensure t)
@@ -33,23 +33,49 @@
 
 * Org Mode Items
 ** creates org mode bullets
-** sets up org-reveal presentation mode
-** allows html highlighting in org mode
-
-#+BEGIN_SRC 
-
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
-(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-
-(use-package htmlize
-  :ensure t)
-
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :init
+    (add-hook 'org-mode-hook #'org-bullets-mode))
 #+END_SRC
 
+** sets up org-reveal presentation mode
+#+BEGIN_SRC emacs-lisp
+(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+#+END_SRC
+
+** allows html highlighting in org mode
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize
+    :ensure t)
+#+END_SRC
+
+** Use syntax hightlighting in source blocks while editing
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t)
+#+END_SRC
+
+** Make TAB act as if it were issued in a buffer of the language's major mode
+#+BEGIN_SRC emacs-lisp
+(setq org-src-tab-acts-natively t)
+#+END_SRC
+
+** Enable spell-checking in Org-mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'flyspell-mode)
+#+END_SRC
+
+
+* TeX Configuration
+** Automatically parse the file after loading it
+#+BEGIN_SRC emacs-lisp
+(setq TeX-parse-self t)
+#+END_SRC
+
+** Always use pdflatex when compiling LaTeX documents
+#+BEGIN_SRC emacs-lisp
+(setq TeX-PDF-mode t)
+#+END_SRC
 
 * Tab Bar
 ** Creates tab bar for Emacs
