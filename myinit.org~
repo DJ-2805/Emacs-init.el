@@ -1,3 +1,13 @@
+* User Information
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "David A. James"
+	user-mail-address "david.abe.james@gmail.com"
+	calendar-latitude 34.1
+	calendar-longitude -118.4
+	calendar-location-name "Westwood, CA")
+
+#+END_SRC
+
 * Tool Bar Removal
 ** removes tool bar
 ** also removes tutorial emacs page
