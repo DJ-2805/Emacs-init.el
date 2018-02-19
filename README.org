@@ -1,0 +1,4 @@
+* Emacs-Init File
+This is my customization for my Emacs editor. The myinit.org has the main components of the customization
+The init.el file connects to the .org file and runs it for Emacs.
+Most of this customization comes from Mike Zamansky's "[[https://www.youtube.com/playlist?list=PL9KxKa8NpFxIcNQa9js7dQQIHc81b0-Xg][Using Emacs]]" playlist on youtube.
