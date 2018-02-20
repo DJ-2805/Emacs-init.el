@@ -1,5 +1,6 @@
 * User Information
 #+BEGIN_SRC emacs-lisp
+
   (setq user-full-name "David A. James"
 	user-mail-address "david.abe.james@gmail.com"
 	calendar-latitude 34.1
@@ -8,20 +9,58 @@
 
 #+END_SRC
 
-* Tool Bar Removal
-** removes tool bar
-** also removes tutorial emacs page
-** sets yes or no to y or n
+* Emacs UI
+** Tool Bar Removal
+*** removes tool bar
+*** also removes tutorial emacs page
+*** sets yes or no to y or n
 #+BEGIN_SRC emacs-lisp
 
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
+
+#+END_SRC
+** Highlight
+*** highlights bar of cursor
+#+BEGIN_SRC emacs-lisp
+
+(global-hl-line-mode t)
+
 #+END_SRC
 
+** Tab Bar
+*** lists buffers in a sperate page for organization
+*** Creates tab bar for Emacs
+#+BEGIN_SRC emacs-lisp
 
-* Try 
-** haves emacs only try a package rather than install
+(defalias 'list-buffers 'ibuffer)
+(use-package tabbar
+  :ensure t
+  :config
+  (tabbar-mode 1))
+
+#+END_SRC
+** Theme
+*** loads themes for emacs
+*** if statement is to switch themes between gui and terminal
+#+BEGIN_SRC emacs-lisp
+
+  (use-package zenburn-theme
+    :ensure t
+    :config (load-theme 'zenburn t))
+
+  ;;(load-theme 'misterioso)
+  ;;(load-theme 'tango-dark)
+  ;;(if (display-graphic-p)
+  ;;    (enable-theme 'misterioso)
+  ;;  (enable-theme 'tango-dark))
+
+#+END_SRC
+
+* Misc Packages
+** Try 
+*** haves emacs only try a package rather than install
 
 #+BEGIN_SRC emacs-lisp
 
@@ -30,87 +69,17 @@
 
 #+END_SRC
 
-
-* Which Key
-** helps with C-x shortcuts, if user forgets
+** Which Key
+*** helps with C-x shortcuts, if user forgets
 #+BEGIN_SRC emacs-lisp
 
 (use-package which-key
 	     :ensure t
 	     :config (which-key-mode))
+
 #+END_SRC
-
-
-* Org Mode Items
-** creates org mode bullets
-#+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :init
-    (add-hook 'org-mode-hook #'org-bullets-mode))
-#+END_SRC
-
-** sets up org-reveal presentation mode
-#+BEGIN_SRC emacs-lisp
-(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-#+END_SRC
-
-** allows html highlighting in org mode
-#+BEGIN_SRC emacs-lisp
-  (use-package htmlize
-    :ensure t)
-#+END_SRC
-
-** Use syntax hightlighting in source blocks while editing
-#+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t)
-#+END_SRC
-
-** Make TAB act as if it were issued in a buffer of the language's major mode
-#+BEGIN_SRC emacs-lisp
-(setq org-src-tab-acts-natively t)
-#+END_SRC
-
-** Enable spell-checking in Org-mode
-#+BEGIN_SRC emacs-lisp
-(add-hook 'org-mode-hook 'flyspell-mode)
-#+END_SRC
-
-
-* TeX Configuration
-** Automatically parse the file after loading it
-#+BEGIN_SRC emacs-lisp
-(setq TeX-parse-self t)
-#+END_SRC
-
-** Always use pdflatex when compiling LaTeX documents
-#+BEGIN_SRC emacs-lisp
-(setq TeX-PDF-mode t)
-#+END_SRC
-
-* Tab Bar
-** Creates tab bar for Emacs
-#+BEGIN_SRC emacs-lisp
-
-(defalias 'list-buffers 'ibuffer)
-(use-package tabbar
-  :ensure t
-  :config
-  (tabbar-mode 1))
-#+END_SRC
-
-
-* Counsel
-** list possible outcomes for typing
-#+BEGIN_SRC emacs-lisp
-
-(use-package counsel
-  :ensure t
-  )
-#+END_SRC
-
-
-* Swiper
-** search function
+** Swiper
+*** search function
 #+BEGIN_SRC emacs-lisp
 
 (use-package swiper
@@ -129,20 +98,28 @@
     ))
 
 #+END_SRC
-
-
-* Avy
-** helps move through buffer
+** Avy
+*** helps move through buffer
 #+BEGIN_SRC emacs-lisp
 
 (use-package avy
   :ensure t
   :bind ("M-s" . avy-goto-char))
+
 #+END_SRC
 
+* Programming Packages
+** Counsel
+*** list possible outcomes for typing
+#+BEGIN_SRC emacs-lisp
 
-* Auto Complete
-** completes input if desired
+(use-package counsel
+  :ensure t
+  )
+
+#+END_SRC
+** Auto Complete
+*** completes input if desired
 #+BEGIN_SRC emacs-lisp
 
 (use-package auto-complete
@@ -152,47 +129,30 @@
     (ac-config-default)
     (global-auto-complete-mode t)
     ))
+
 #+END_SRC
-
-
-* Theme
-** loads themes for emacs
-** if statement is to switch themes between gui and terminal
+*** auto complete for c/c++ headers
 #+BEGIN_SRC emacs-lisp
 
-  (use-package zenburn-theme
-    :ensure t
-    :config (load-theme 'zenburn t))
+  (defun my:ac-c-header-init()
+    (require 'auto-complete-c-headers)
+    (add-to-list 'ac-source 'ac-source-c-headers))
+  (add-hook 'c++-mode-hook 'my:ac-c-header-init)
+  (add-hook 'c-mode-hook 'my:ac-c-header-init)
 
-  ;;(load-theme 'misterioso)
-  ;;(load-theme 'tango-dark)
-  ;;(if (display-graphic-p)
-  ;;    (enable-theme 'misterioso)
-  ;;  (enable-theme 'tango-dark))
 #+END_SRC
-
-
-* Flycheck
-** checks coding syntax
+** Flycheck
+*** checks coding syntax
 #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
   :ensure t
   :init
   (global-flycheck-mode t))
+
 #+END_SRC
-
-
-* Highlight
-** highlights bar of cursor
-#+BEGIN_SRC emacs-lisp
-
-(global-hl-line-mode t)
-#+END_SRC
-
-
-* Hungry Delete
-** deletes all white space between text when deleting
+** Hungry Delete
+*** deletes all white space between text when deleting
 #+BEGIN_SRC emacs-lisp
 
 (use-package hungry-delete
@@ -201,36 +161,94 @@
   (global-hungry-delete-mode))
 
 #+END_SRC
+** iEdit
+*** allows editing of multiple words at one time
+#+BEGIN_SRC emacs-lisp
 
+(use-package iedit
+  :ensure t)
 
-* Expand Region
-** highlights within a parenthesis
-** expands out left and right
+#+END_SRC
+** Semantic
+*** does parsing for c/c++ files
+#+BEGIN_SRC emacs-lisp
+
+  (semantic-mode 1)
+  (defun my:add-semantic-to-autocomplete()
+    (add-to-list 'ac-sources 'ac-sources-semantic))
+  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+#+END_SRC
+
+** Expand Region
+*** highlights within a parenthesis
+*** expands out left and right
 #+BEGIN_SRC emacs-lisp
 
 (use-package expand-region
   :ensure t
   :config
   (global-set-key (kbd "C-=") 'er/expand-region))
+
 #+END_SRC
 
-
-* iEdit
-** allows editing of multiple words at one time
+* Org Mode Packages
+** creates org mode bullets
 #+BEGIN_SRC emacs-lisp
 
-(use-package iedit
-  :ensure t)
+  (use-package org-bullets
+    :init
+    (add-hook 'org-mode-hook #'org-bullets-mode))
+
 #+END_SRC
 
-
-* List Buffers
-** lists buffers in a seperate page for organization
+** sets up org-reveal presentation mode
 #+BEGIN_SRC emacs-lisp
-;;creates a tab bar in emacs
-(defalias 'list-buffers 'ibuffer)
-(use-package tabbar
-  :ensure t
-  :config
-  (tabbar-mode 1))
+
+(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+
+#+END_SRC
+
+** allows html highlighting in org mode
+#+BEGIN_SRC emacs-lisp
+
+  (use-package htmlize
+    :ensure t)
+
+#+END_SRC
+
+** Use syntax hightlighting in source blocks while editing
+#+BEGIN_SRC emacs-lisp
+
+(setq org-src-fontify-natively t)
+
+#+END_SRC
+
+** Make TAB act as if it were issued in a buffer of the language's major mode
+#+BEGIN_SRC emacs-lisp
+
+(setq org-src-tab-acts-natively t)
+
+#+END_SRC
+
+** Enable spell-checking in Org-mode
+#+BEGIN_SRC emacs-lisp
+
+(add-hook 'org-mode-hook 'flyspell-mode)
+
+#+END_SRC
+
+* TeX Packages
+** Automatically parse the file after loading it
+#+BEGIN_SRC emacs-lisp
+
+(setq TeX-parse-self t)
+
+#+END_SRC
+
+** Always use pdflatex when compiling LaTeX documents
+#+BEGIN_SRC emacs-lisp
+
+(setq TeX-PDF-mode t)
+
 #+END_SRC
