@@ -1,12 +1,10 @@
 * User Information
 #+BEGIN_SRC emacs-lisp
-
   (setq user-full-name "David A. James"
 	user-mail-address "david.abe.james@gmail.com"
 	calendar-latitude 34.1
 	calendar-longitude -118.4
 	calendar-location-name "Westwood, CA")
-
 #+END_SRC
 
 * Emacs UI
@@ -15,37 +13,32 @@
 *** also removes tutorial emacs page
 *** sets yes or no to y or n
 #+BEGIN_SRC emacs-lisp
-
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
-
 #+END_SRC
+
 ** Highlight
 *** highlights bar of cursor
 #+BEGIN_SRC emacs-lisp
-
 (global-hl-line-mode t)
-
 #+END_SRC
 
 ** Tab Bar
 *** lists buffers in a sperate page for organization
 *** Creates tab bar for Emacs
 #+BEGIN_SRC emacs-lisp
-
 (defalias 'list-buffers 'ibuffer)
 (use-package tabbar
   :ensure t
   :config
   (tabbar-mode 1))
-
 #+END_SRC
+
 ** Theme
 *** loads themes for emacs
 *** if statement is to switch themes between gui and terminal
 #+BEGIN_SRC emacs-lisp
-
   (use-package zenburn-theme
     :ensure t
     :config (load-theme 'zenburn t))
@@ -55,33 +48,27 @@
   ;;(if (display-graphic-p)
   ;;    (enable-theme 'misterioso)
   ;;  (enable-theme 'tango-dark))
-
 #+END_SRC
 
 * Misc Packages
 ** Try 
 *** haves emacs only try a package rather than install
-
 #+BEGIN_SRC emacs-lisp
-
 (use-package try
 	     :ensure t)
-
 #+END_SRC
 
 ** Which Key
 *** helps with C-x shortcuts, if user forgets
 #+BEGIN_SRC emacs-lisp
-
 (use-package which-key
 	     :ensure t
 	     :config (which-key-mode))
-
 #+END_SRC
+
 ** Swiper
 *** search function
 #+BEGIN_SRC emacs-lisp
-
 (use-package swiper
   :ensure try
   :bind (("C-s" . swiper)
@@ -96,102 +83,138 @@
     (setq ivy-display-style 'fancy)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     ))
-
 #+END_SRC
+
 ** Avy
 *** helps move through buffer
 #+BEGIN_SRC emacs-lisp
-
 (use-package avy
   :ensure t
   :bind ("M-s" . avy-goto-char))
-
 #+END_SRC
 
 * Programming Packages
 ** Counsel
 *** list possible outcomes for typing
 #+BEGIN_SRC emacs-lisp
-
-(use-package counsel
-  :ensure t
-  )
-
+  (use-package counsel
+    :ensure t
+    :bind
+    (("M-y" . counsel-yank-pop)
+     :map ivy-minibuffer-map
+     ("M-y" . ivy-next-line)))
 #+END_SRC
-** Auto Complete
-*** completes input if desired
+** Ivy
 #+BEGIN_SRC emacs-lisp
-
-(use-package auto-complete
-  :ensure t
-  :init
-  (progn
-    (ac-config-default)
-    (global-auto-complete-mode t)
-    ))
-
-#+END_SRC
-*** auto complete for c/c++ headers
-#+BEGIN_SRC emacs-lisp
-
-  (defun my:ac-c-header-init()
-    (require 'auto-complete-c-headers)
-    (add-to-list 'ac-source 'ac-source-c-headers))
-  (add-hook 'c++-mode-hook 'my:ac-c-header-init)
-  (add-hook 'c-mode-hook 'my:ac-c-header-init)
-
+  (use-package ivy
+    :ensure t
+    :diminish (ivy-mode)
+    :bind (("C-x b" . ivy-switch-buffer))
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "%d/%d ")
+    (setq ivy-display-style 'fancy))
 #+END_SRC
 ** Flycheck
 *** checks coding syntax
 #+BEGIN_SRC emacs-lisp
-
 (use-package flycheck
   :ensure t
   :init
   (global-flycheck-mode t))
-
 #+END_SRC
+
 ** Hungry Delete
 *** deletes all white space between text when deleting
 #+BEGIN_SRC emacs-lisp
-
 (use-package hungry-delete
   :ensure t
   :config
   (global-hungry-delete-mode))
-
 #+END_SRC
+
 ** iEdit
 *** allows editing of multiple words at one time
 #+BEGIN_SRC emacs-lisp
-
 (use-package iedit
   :ensure t)
-
 #+END_SRC
+
 ** Semantic
 *** does parsing for c/c++ files
 #+BEGIN_SRC emacs-lisp
-
   (semantic-mode 1)
   (defun my:add-semantic-to-autocomplete()
     (add-to-list 'ac-sources 'ac-sources-semantic))
   (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-
 #+END_SRC
 
 ** Expand Region
 *** highlights within a parenthesis
 *** expands out left and right
 #+BEGIN_SRC emacs-lisp
-
 (use-package expand-region
   :ensure t
   :config
   (global-set-key (kbd "C-=") 'er/expand-region))
-
 #+END_SRC
 
+** Version Control
+*** loads file if new one is saved
+*** helpful for files on shared drives
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode 1)
+(setq auto-revert-verbose nil)
+#+END_SRC
+** Dump-Jump
+*** Helps with project movement
+**** if move over function, can lead to where else it is called
+#+BEGIN_SRC emacs-lisp
+  (use-package dump-jump
+    :bind(("M-g o" . dump-jump-go-other-window)
+	  ("M-g j" . dump-jump-go)
+	  ("M-g x" . dump-jump-go-prefer-external)
+	  ("M-g z" . dump-jump-go-prefer-external-other-window))
+    :config (setq dump-jump-selector 'ivy)
+    :ensure)
+#+END_SRC
+** Projectile
+*** A way to define what are your project directories
+*** makes it more efficient for moving around
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (projectile-global-mode)
+    (setq projectile-completion-system 'ivy))
+
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-on))
+#+END_SRC
+** Emmet
+*** Helps with making HTML and CSS tags for web dev
+#+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :config
+    (add-hook 'sgml-mode-hook 'emmet-mode)  ;; Auto-start on any markup modes
+    (add-hook 'web-mode-hook 'emmet-mode)   ;; Auto-start on any markup modes
+    (add-hook 'css-mode-hook 'emmet-mode))   ;; enable Emmet's css abbreviation
+#+END_SRC
+** Company: Auto Check
+*** auto check for coding and in general
+#+BEGIN_SRC emacs-lisp
+  (require 'company-irony-c-headers)
+  ;; Load with 'irony-mode' as a grouped backed
+  (add-to-list 'company-backends 'company-c-headers)
+
+  (eval-after-load 'company
+    '(add-to-list 'company-backends 'company-irony)
+    '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+#+END_SRC
 * Org Mode Packages
 ** creates org mode bullets
 #+BEGIN_SRC emacs-lisp
@@ -204,9 +227,11 @@
 
 ** sets up org-reveal presentation mode
 #+BEGIN_SRC emacs-lisp
+  (use-package ox-reveal
+    :ensure ox-reveal)
 
-(setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-
+  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+  (setq org-reveal.mathjax t)
 #+END_SRC
 
 ** allows html highlighting in org mode
@@ -259,4 +284,22 @@
 		 ("\\subsubsection{%s}" . "\\subsubsectin*{%s}")
 		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
 		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+END_SRC
+* Git Packages
+** Git Gutter
+*** Helps with version control
+*** shows changes live between commits
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter
+    :ensure t
+    :init
+    (global-git-gutter-mode +1))
+#+END_SRC
+
+** Git Timemachine
+*** Helps with git commits
+*** shows previous commits and logic of user
+#+BEGIN_SRC emacs-lisp
+  (use-package git-timemachine
+    :ensure t)
 #+END_SRC

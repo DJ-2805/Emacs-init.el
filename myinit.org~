@@ -231,13 +231,6 @@
 
 #+END_SRC
 
-** Enable spell-checking in Org-mode
-#+BEGIN_SRC emacs-lisp
-
-(add-hook 'org-mode-hook 'flyspell-mode)
-
-#+END_SRC
-
 * TeX Packages
 ** Automatically parse the file after loading it
 #+BEGIN_SRC emacs-lisp
@@ -251,4 +244,19 @@
 
 (setq TeX-PDF-mode t)
 
+#+END_SRC
+
+** Set org bullets to sections for LaTeX documents
+#+BEGIN_SRC  emacs-lisp
+  (require 'ox-latex)
+  (unless (boundp 'org-latex-classes)
+    (setq org-latex-classes nil))
+  (add-to-list 'org-latex-classes
+	       '("article"
+		 "\\documentclass{article}"
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsectin*{%s}")
+		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 #+END_SRC
