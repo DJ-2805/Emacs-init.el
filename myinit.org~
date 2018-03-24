@@ -35,13 +35,24 @@
   (tabbar-mode 1))
 #+END_SRC
 
+** Line Numbering
+*** adds line numbers, and a space inbetween numbers
+#+BEGIN_SRC emacs-lisp
+  (global-linum-mode 1)
+#+END_SRC
 ** Theme
 *** loads themes for emacs
 *** if statement is to switch themes between gui and terminal
 #+BEGIN_SRC emacs-lisp
-  (use-package zenburn-theme
-    :ensure t
-    :config (load-theme 'zenburn t))
+  (load-theme 'darkburn t)
+
+  ;;(load-theme 'spacemacs-theme t)
+  ;;(use-package zenburn-theme
+  ;;  :ensure t)
+
+  ;;(defvar zenburn-override-colors-alist
+  ;;  '(("zenburn-bg-2" . "#000000")))
+  ;;(load-theme 'zenburn t)
 
   ;;(load-theme 'misterioso)
   ;;(load-theme 'tango-dark)
@@ -50,6 +61,40 @@
   ;;  (enable-theme 'tango-dark))
 #+END_SRC
 
+** Collapse Fringes
+*** Collapses side fringes to save space
+#+BEGIN_SRC emacs-lisp
+  (fringe-mode -1)
+#+END_SRC
+** CamelCase Moving
+#+BEGIN_SRC emacs-lisp
+  (global-subword-mode 1)
+#+END_SRC
+** Pair Paranthesis
+*** puts two paranthesis or other icons when typing
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+			      (?\( . ?\))
+			      (?\[ . ?\])
+			      (?\{ . ?\})
+			      (?\" . ?\")
+			      ))
+  (electric-pair-mode t)
+#+END_SRC
+** Kill Whole Word
+*** adds a command to delete the entire word the cursor is on
+#+BEGIN_SRC emacs-lisp
+  (defun kill-whole-word ()
+    (interactive)
+    (backward-word)
+    (kill-word 1))
+  (global-set-key (kbd "C-c w") 'kill-whole-word)
+#+END_SRC
+** Remove Auto Saving
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-file nil)
+  (setq auto-save-default nil)
+#+END_SRC
 * Misc Packages
 ** Try 
 *** haves emacs only try a package rather than install
@@ -171,28 +216,28 @@
 *** Helps with project movement
 **** if move over function, can lead to where else it is called
 #+BEGIN_SRC emacs-lisp
-  (use-package dump-jump
-    :bind(("M-g o" . dump-jump-go-other-window)
-	  ("M-g j" . dump-jump-go)
-	  ("M-g x" . dump-jump-go-prefer-external)
-	  ("M-g z" . dump-jump-go-prefer-external-other-window))
-    :config (setq dump-jump-selector 'ivy)
-    :ensure)
+;;  (use-package dump-jump
+;;    :bind(("M-g o" . dump-jump-go-other-window)
+;;	  ("M-g j" . dump-jump-go)
+;;	  ("M-g x" . dump-jump-go-prefer-external)
+;;	  ("M-g z" . dump-jump-go-prefer-external-other-window))
+;;    :config (setq dump-jump-selector 'ivy)
+;;    :ensure t)
 #+END_SRC
 ** Projectile
 *** A way to define what are your project directories
 *** makes it more efficient for moving around
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :config
-    (projectile-global-mode)
-    (setq projectile-completion-system 'ivy))
-
-  (use-package counsel-projectile
-    :ensure t
-    :config
-    (counsel-projectile-on))
+;;  (use-package projectile
+;;    :ensure t
+;;    :config
+;;    (projectile-global-mode)
+;;    (setq projectile-completion-system 'ivy))
+;;
+;;  (use-package counsel-projectile
+;;    :ensure t
+;;    :config
+;;    (counsel-projectile-on))
 #+END_SRC
 ** Emmet
 *** Helps with making HTML and CSS tags for web dev
@@ -204,28 +249,40 @@
     (add-hook 'web-mode-hook 'emmet-mode)   ;; Auto-start on any markup modes
     (add-hook 'css-mode-hook 'emmet-mode))   ;; enable Emmet's css abbreviation
 #+END_SRC
-** Company: Auto Check
-*** auto check for coding and in general
+** Auto Complete
+*** Some extra configuration for auto complete
+*** helps c/c++ files
 #+BEGIN_SRC emacs-lisp
-  (require 'company-irony-c-headers)
-  ;; Load with 'irony-mode' as a grouped backed
-  (add-to-list 'company-backends 'company-c-headers)
+  (ac-config-default)
+  (global-auto-complete-mode t)
+  (add-to-list 'ac-modes 'c++-mode)
 
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-irony)
-    '(add-to-list 'company-backends '(company-irony-c-headers company-irony)))
+  ;; turn on semantic
+  (semantic-mode 1)
+
+  ;; define a function which adds semantic as backup to auto-complete
+  (defun my:add-semantic-to-autocomplete()
+    (add-to-list 'ac-sources 'ac-source-semantic))
+  (add-hook 'c++-mode 'my:add-semantic-to-autocomplete)
 #+END_SRC
 * Org Mode Packages
-** creates org mode bullets
+** Org Font
+*** sets unicode symbols
 #+BEGIN_SRC emacs-lisp
-
-  (use-package org-bullets
-    :init
-    (add-hook 'org-mode-hook #'org-bullets-mode))
-
+  (set-fontset-font "fontset-default" nil
+		    (font-spec :size 20 :name "Symbola"))
+#+END_SRC
+** Org-Bullets
+*** sets hierarchy stars to nicer bullets
+#+BEGIN_SRC emacs-lisp
+  (require 'org-bullets)
+  (setq org-bullet-face-name (quote org-bullet-face))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (setq org-bullets-bullet-list '("§" "◉" "◎" "☉" "○" "∘" "∙"))
 #+END_SRC
 
-** sets up org-reveal presentation mode
+** Org-Reveal
+*** allows conversion of org files into presentations
 #+BEGIN_SRC emacs-lisp
   (use-package ox-reveal
     :ensure ox-reveal)
@@ -234,7 +291,7 @@
   (setq org-reveal.mathjax t)
 #+END_SRC
 
-** allows html highlighting in org mode
+*** allows html highlighting in org mode
 #+BEGIN_SRC emacs-lisp
 
   (use-package htmlize
@@ -242,20 +299,18 @@
 
 #+END_SRC
 
-** Use syntax hightlighting in source blocks while editing
+** Org-Ellipsis
+*** changes the 3 dots to a certain character
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis "↴")
+#+END_SRC
+** Syntax Highlight
+*** Use syntax hightlighting in source blocks while editing
 #+BEGIN_SRC emacs-lisp
 
 (setq org-src-fontify-natively t)
 
 #+END_SRC
-
-** Make TAB act as if it were issued in a buffer of the language's major mode
-#+BEGIN_SRC emacs-lisp
-
-(setq org-src-tab-acts-natively t)
-
-#+END_SRC
-
 * TeX Packages
 ** Automatically parse the file after loading it
 #+BEGIN_SRC emacs-lisp
