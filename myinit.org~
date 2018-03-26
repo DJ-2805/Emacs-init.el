@@ -186,15 +186,6 @@
   :ensure t)
 #+END_SRC
 
-** Semantic
-*** does parsing for c/c++ files
-#+BEGIN_SRC emacs-lisp
-  (semantic-mode 1)
-  (defun my:add-semantic-to-autocomplete()
-    (add-to-list 'ac-sources 'ac-sources-semantic))
-  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-#+END_SRC
-
 ** Expand Region
 *** highlights within a parenthesis
 *** expands out left and right
