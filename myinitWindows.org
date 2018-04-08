@@ -1,5 +1,8 @@
 * User Information
+** Makes full screen and puts user info
 #+BEGIN_SRC emacs-lisp
+;;  (set-frame-parameter nil 'fullscreen 'fullboth)
+
   (setq user-full-name "David A. James"
 	user-mail-address "david.abe.james@gmail.com"
 	calendar-latitude 34.1
@@ -8,16 +11,19 @@
 #+END_SRC
 
 * Emacs UI
-** Tool Bar Removal
+** Removing Some StartUp
 *** removes tool bar
-*** also removes tutorial emacs page
+*** removes menu bar
+*** removes scroll bar
+*** removes tutorial emacs page
 *** sets yes or no to y or n
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-(tool-bar-mode -1)
-(fset 'yes-or-no-p 'y-or-n-p)
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
-
 ** Highlight
 *** highlights bar of cursor
 #+BEGIN_SRC emacs-lisp
@@ -44,6 +50,8 @@
 *** loads themes for emacs
 *** if statement is to switch themes between gui and terminal
 #+BEGIN_SRC emacs-lisp
+  (use-package darkburn-theme
+    :ensure t)
   (load-theme 'darkburn t)
 
   ;;(load-theme 'spacemacs-theme t)
@@ -65,6 +73,7 @@
 *** Collapses side fringes to save space
 #+BEGIN_SRC emacs-lisp
   (fringe-mode -1)
+  (setq powerline-default-separator nil)
 #+END_SRC
 ** CamelCase Moving
 #+BEGIN_SRC emacs-lisp
@@ -92,8 +101,39 @@
 #+END_SRC
 ** Remove Auto Saving
 #+BEGIN_SRC emacs-lisp
-  (setq make-backup-file nil)
+  (setq make-backup-files nil)
   (setq auto-save-default nil)
+#+END_SRC
+** Keybinding Bash
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<s-return>") 'eshell)
+#+END_SRC
+** Dashboard
+*** sets the start screen
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+    (setq dashboard-items '((recents . 10)))
+    (setq dashboard-banner-logo-title "")
+    (setq dashboard-startup-banner 'logo))
+
+  (add-to-list 'dashboard-items '(agenda) t)
+
+#+END_SRC
+** Spaceline
+*** makes the mode line more readable
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq spaceline-buffer-encoding-abbrev-p nil)
+    (setq spaceline-line-column-p nil)
+    (setq spaceline-line-p nil)
+    (setq powerline-default-separator (quote arrow))
+    (spaceline-spacemacs-theme))
 #+END_SRC
 * Misc Packages
 ** Try 
@@ -244,6 +284,8 @@
 *** Some extra configuration for auto complete
 *** helps c/c++ files
 #+BEGIN_SRC emacs-lisp
+  (use-package auto-complete
+    :ensure t)
   (ac-config-default)
   (global-auto-complete-mode t)
   (add-to-list 'ac-modes 'c++-mode)
@@ -266,10 +308,12 @@
 ** Org-Bullets
 *** sets hierarchy stars to nicer bullets
 #+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t)
   (require 'org-bullets)
   (setq org-bullet-face-name (quote org-bullet-face))
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("§" "◉" "◎" "☉" "○" "∘" "∙"))
+  (setq org-bullets-bullet-list '("§" "◎" "●" "☉" "○" "" "∙"))
 #+END_SRC
 
 ** Org-Reveal
@@ -293,7 +337,14 @@
 ** Org-Ellipsis
 *** changes the 3 dots to a certain character
 #+BEGIN_SRC emacs-lisp
-  (setq org-ellipsis "↴")
+  (setq org-ellipsis "▼")
+#+END_SRC
+** Org-Agenda
+*** puts to agenda file created
+#+BEGIN_SRC emacs-lisp
+  ;(setq org-agenda-files (list "~/Documents/agenda/schedule.org"
+  ;                             "~/Documents/agenda/workout.org"))
+
 #+END_SRC
 ** Syntax Highlight
 *** Use syntax hightlighting in source blocks while editing
@@ -301,6 +352,11 @@
 
 (setq org-src-fontify-natively t)
 
+#+END_SRC
+** Line Wrapping
+*** lines wrap when at the end of the screen
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook '(lambda () (visual-line-mode 1)))
 #+END_SRC
 * TeX Packages
 ** Automatically parse the file after loading it
