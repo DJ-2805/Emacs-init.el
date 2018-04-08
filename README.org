@@ -4,3 +4,6 @@ main components of the customization The init.el file connects to the
 .org file and runs it for Emacs.  Most of this customization comes
 from Mike Zamansky's "[[https://www.youtube.com/playlist?list=PL9KxKa8NpFxIcNQa9js7dQQIHc81b0-Xg][Using Emacs]]" playlist on youtube. This now also
 follows some customization from Uncle Dave's [[https://www.youtube.com/playlist?list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n][Emacs Tutorial]].
+
+
+This has two init files, myinitWindows and myinitLinux, that work for the specified OS. Just remove the 'Windows' or 'Linux' ending and the file will connect with the init.el file correctly.
