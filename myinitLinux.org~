@@ -1,7 +1,7 @@
 * User Information
 ** Makes full screen and puts user info
 #+BEGIN_SRC emacs-lisp
-  ;;(set-frame-parameter nil 'fullscreen 'fullboth)
+  (set-frame-parameter nil 'fullscreen 'fullboth)
 
   (setq user-full-name "David A. James"
 	user-mail-address "david.abe.james@gmail.com"
@@ -102,6 +102,15 @@
   (setq make-backup-files nil)
   (setq auto-save-default nil)
 #+END_SRC
+** Keybinding Bash
+#+BEGIN_SRC emacs-lisp
+  (defvar my-term-shell "/bin/bash")
+  (defadvice ansi-term (before force-bash)
+    (interactive (list my-term-shell)))
+  (ad-activate 'ansi-term)
+
+  (global-set-key (kbd "<s-return>") 'ansi-term)
+#+END_SRC
 ** Dashboard
 *** sets the start screen
 #+BEGIN_SRC emacs-lisp
@@ -129,6 +138,13 @@
     (setq powerline-default-separator (quote arrow))
     (spaceline-spacemacs-theme))
 #+END_SRC
+** dMenu
+ #+BEGIN_SRC emacs-lisp
+   (use-package dmenu
+     :ensure t
+     :bind
+     ("s-SPC" . 'dmenu))
+ #+END_SRC
 ** Battery
 *** sets a fancy battery on the mode line
 *** battery is turned off if not on GUI
@@ -318,14 +334,6 @@
     (add-to-list 'ac-sources 'ac-source-semantic))
   (add-hook 'c++-mode 'my:add-semantic-to-autocomplete)
 #+END_SRC
-** Solidity
-   #+BEGIN_SRC emacs-lisp
-     (require 'solidity-mode)
-     (setq solidity-coment-style 'slash)
-     (global-set-key (kbd "C-c C-g") 'solidity-estimate-gas-at-point)
-     (setq solidity-flycheck-solc-checker-active t)
-     (setq solidity-flycheck-solium-checker-active t)
-   #+END_SRC
 * Org Mode Packages
 ** Org Font
 *** sets unicode symbols
@@ -367,29 +375,10 @@
 #+END_SRC
 ** Org-Agenda
 *** puts to agenda file created
-*** kebinds org-agenda to "s-a"
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files (list "~/Documents/agenda/schedule.org"
 			       "~/Documents/agenda/workout.org"))
 
-  (global-set-key (kbd "s-a") 'org-agenda)
-#+END_SRC
-** Org-Capture
-*** A way to place ideas and notes into specific files
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-c c") 'org-capture)
-
-  ;(setq org-capture-templates
-  ;      '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" "Appointments")
-  ;	 "* TODO %?\n:PROPERTIES:\n\n:END:\nDEADLINE: %^T \n %i\n")
-  ;	("n" "Note" entry (file+headline "~/Dropbox/orgfiles/notes.org" "Notes")
-  ;	 "* Note %?\n%T")
-  ;	("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
-  ;	 "* %? %^L %^g \n%T" :prepend t)
-  ;	("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do Items")
-  ;	 "* %?\n%T" :prepend t)
-  ;	("j" "Journal" entry (file+datetree "~/Dropbox/journal.org")
-  ;	 "* %?\nEntered on %U\n  %i\n  %a")))
 #+END_SRC
 ** Syntax Highlight
 *** Use syntax hightlighting in source blocks while editing
@@ -406,22 +395,16 @@
 * TeX Packages
 ** Automatically parse the file after loading it
 #+BEGIN_SRC emacs-lisp
+
 (setq TeX-parse-self t)
+
 #+END_SRC
-** AucTex
-   #+BEGIN_SRC emacs-lisp
-     ;;(require 'auctex)
-     ;;(load "preview-latex.el" nil t t)
-   #+END_SRC
-** Preview Pane
-   #+BEGIN_SRC emacs-lisp
-     (use-package latex-preview-pane
-       :ensure t)
-     (latex-preview-pane-enable)
-   #+END_SRC
+
 ** Always use pdflatex when compiling LaTeX documents
 #+BEGIN_SRC emacs-lisp
+
 (setq TeX-PDF-mode t)
+
 #+END_SRC
 
 ** Set org bullets to sections for LaTeX documents
