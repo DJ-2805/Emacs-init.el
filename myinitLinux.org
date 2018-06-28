@@ -3,11 +3,11 @@
 #+BEGIN_SRC emacs-lisp
   ;;(set-frame-parameter nil 'fullscreen 'fullboth)
 
-  (setq user-full-name "David A. James"
-	user-mail-address "david.abe.james@gmail.com"
-	calendar-latitude 34.1
-	calendar-longitude -118.4
-	calendar-location-name "Westwood, CA")
+  (setq user-full-name ""
+	user-mail-address ""
+	calendar-latitude 0
+	calendar-longitude 0
+	calendar-location-name "")
 #+END_SRC
 
 * Emacs UI
