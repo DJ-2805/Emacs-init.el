@@ -12,6 +12,6 @@ connect with the init.el file correctly.
 
 ** Spacemacs
    There is now a spacemacs file with my customization. If deciding to use it,
-   you must first install spacemacs through through their site [[spacemacs.org][Click here]]. After
+   you must first install spacemacs through through their site [[http://spacemacs.org][Click here]]. After
    the install is complete, you can copy this .spacemacs file over the initial
    one.
