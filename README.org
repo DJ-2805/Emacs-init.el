@@ -6,4 +6,12 @@ from Mike Zamansky's "[[https://www.youtube.com/playlist?list=PL9KxKa8NpFxIcNQa9
 follows some customization from Uncle Dave's [[https://www.youtube.com/playlist?list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n][Emacs Tutorial]].
 
 
-This has two init files, myinitWindows and myinitLinux, that work for the specified OS. Just remove the 'Windows' or 'Linux' ending and the file will connect with the init.el file correctly.
+This has two init files, myinitWindows and myinitLinux, that work for the
+specified OS. Just remove the 'Windows' or 'Linux' ending and the file will
+connect with the init.el file correctly.
+
+** Spacemacs
+   There is now a spacemacs file with my customization. If deciding to use it,
+   you must first install spacemacs through through their site [[spacemacs.org][Click here]]. After
+   the install is complete, you can copy this .spacemacs file over the initial
+   one.
