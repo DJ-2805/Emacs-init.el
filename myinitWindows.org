@@ -1,15 +1,3 @@
-* User Information
-** Makes full screen and puts user info
-#+BEGIN_SRC emacs-lisp
-;;  (set-frame-parameter nil 'fullscreen 'fullboth)
-
-  (setq user-full-name ""
-	user-mail-address ""
-	calendar-latitude 0
-	calendar-longitude 0
-	calendar-location-name "")
-#+END_SRC
-
 * Emacs UI
 ** Removing Some StartUp
 *** removes tool bar
